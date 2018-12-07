@@ -1,0 +1,12 @@
+{
+    "name": "douzhi/database-excel",
+    "authors": [
+        {
+            "name": "shann",
+            "email": "1829823496@qq.com"
+        }
+    ],
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.5"
+    }
+}
