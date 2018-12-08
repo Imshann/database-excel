@@ -1,5 +1,7 @@
 <?php
 
+namespace Douzhi;
+
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
@@ -15,10 +17,20 @@ class Database
      */
     protected $auto_increment = 0;
 
-    public function __construct($excelPath)
+    public static function bootstrap()
+    {
+        return new self();
+    }
+
+    public function setExcelPath($excelPath)
     {
         static::$excelPath = $excelPath;
-        $rootPath = dirname(__FILE__);
+        return $this;
+    }
+
+    public function connect()
+    {
+        $rootPath = dirname(dirname(__FILE__));
         $list = scandir(static::$excelPath);
         $list = array_filter($list, function ($var) {
             return stripos($var, '.xlsx') && !stripos($var, '$');
@@ -28,12 +40,13 @@ class Database
             $model_classpath = ucfirst(str_replace('.xlsx', '.php', $item));
             $tableName = strtolower($model_classname);
 
-            $this->getFields($excelPath . $item);
-            $attributes = $this->buildAttributes($this->getFields($excelPath . $item));
+            $this->getFields(static::$excelPath . $item);
+            $attributes = $this->buildAttributes($this->getFields(static::$excelPath . $item));
             if (!file_exists("{$rootPath}/model/{$model_classpath}")) {
                 $class_template = <<<text
 <?php
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Douzhi\Database;
 
 class {$model_classname} extends Database 
 {
@@ -56,11 +69,6 @@ text;
                 require "{$rootPath}/model/{$model_classpath}";
             }
         }
-    }
-
-    public function setExcelPath($path)
-    {
-        $this->excelPath = $path;
     }
 
     private function getFields($filename)
@@ -190,7 +198,8 @@ text;
         return static::$excelPath . $this->tableName . '.xlsx';
     }
 
-    public function update(){
+    public function update()
+    {
         $properties = get_object_vars($this);
         $records = $this->all();
         foreach ($records as $key => $record) {

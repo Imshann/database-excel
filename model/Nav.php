@@ -1,5 +1,6 @@
 <?php
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Douzhi\Database;
 
 class Nav extends Database 
 {

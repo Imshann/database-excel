@@ -1,5 +1,5 @@
 {
-    "version": "0.0.1",
+    "version": "0.1.0",
     "name": "douzhi/database-excel",
     "authors": [
         {
@@ -7,6 +7,9 @@
             "email": "1829823496@qq.com"
         }
     ],
+    "autoload": {
+        "psr-4": {"Douzhi\\": "src/"}
+    },
     "require": {
         "phpoffice/phpspreadsheet": "^1.5"
     }
