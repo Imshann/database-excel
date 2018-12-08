@@ -8,6 +8,14 @@ class Nav extends Database
     
     public function __construct()
     {
-        $this->spreadsheet = IOFactory::load(parent::$excelPath . $this->tableName . '.xlsx');
+        $this->spreadsheet = IOFactory::load($this->getExcelPath());
+    }
+    
+    public function attributes()
+    {
+        return [
+            'id',
+            'nav_name',
+        ];
     }
 }
