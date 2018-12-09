@@ -1,16 +1,19 @@
 {
-    "version": "0.1.1",
-    "name": "douzhi/database-excel",
-    "authors": [
-        {
-            "name": "shann",
-            "email": "1829823496@qq.com"
-        }
-    ],
-    "autoload": {
-        "psr-4": {"Douzhi\\": "src/"}
-    },
-    "require": {
-        "phpoffice/phpspreadsheet": "^1.5"
+  "version": "0.1.1",
+  "name": "douzhi/database-excel",
+  "authors": [
+    {
+      "name": "shann",
+      "email": "1829823496@qq.com"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Douzhi\\": "src/"
+    }
+  },
+  "require": {
+    "phpoffice/phpspreadsheet": "^1.5"
+  },
+  "minimum-stability": "stable"
 }
