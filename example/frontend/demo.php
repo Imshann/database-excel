@@ -8,7 +8,6 @@ DB::bootstrap()
   ->setExcelPath('../database/')
   ->connect();
 
-$nav = Nav::findOne(1);
-$nav->nav_name = '中文';
-$nav->update();
+$nav = Nav::findOne(2);
+$nav->delete();
 exit;

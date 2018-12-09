@@ -121,7 +121,11 @@ text;
 
     public function one()
     {
-        return $this->all()[$this->where['id']];
+        $records = $this->all();
+        if (!isset($records[$this->where['id']])) {
+            return false;
+        }
+        return $records[$this->where['id']];
     }
 
     public static function findOne($id)
@@ -129,6 +133,9 @@ text;
         $model = new static();
         $record = $model->where([$model->getFields($model->getExcelPath())[0] => $id])
                         ->one();
+        if (empty($record)) {
+            return $model;
+        }
         foreach ($record as $index => $item) {
             $model->$index = $item;
         }
@@ -210,6 +217,30 @@ text;
                 $records[$this->id][$attribute] = $value;
             }
         }
+        $worksheet = $this->spreadsheet->getActiveSheet();
+        $worksheet->fromArray($records, NULL, 'A2');
+        $styleArray = [
+            'borders' => [
+                'allBorders' => ['borderStyle' => Border::BORDER_THIN],
+            ],
+            'alignment' => ['horizontal' => Alignment::HORIZONTAL_LEFT]
+        ];
+        $worksheet->getStyle('A1:B30')
+                  ->applyFromArray($styleArray);
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($this->spreadsheet);
+        $writer->save($this->getExcelPath());
+    }
+
+    public function delete()
+    {
+        $records = $this->all();
+        foreach ($records as $key => $record) {
+            $records[$key] = (array)$record;
+        }
+        if (!isset($records[$this->where[$this->getFields($this->getExcelPath())[0]]])) {
+            return false;
+        }
+        unset($records[$this->where[$this->getFields($this->getExcelPath())[0]]]);
         $worksheet = $this->spreadsheet->getActiveSheet();
         $worksheet->fromArray($records, NULL, 'A2');
         $styleArray = [
